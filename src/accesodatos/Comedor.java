@@ -1,5 +1,7 @@
 package accesodatos;
 
+import org.xmldb.api.base.Resource;
+import org.xmldb.api.base.ResourceIterator;
 import org.xmldb.api.base.ResourceSet;
 import org.xmldb.api.modules.XPathQueryService;
 
@@ -95,25 +97,46 @@ public class Comedor extends JFrame {
 
   private void insertaFactura(String nombre, String fecha, String camarero, String primero, String segundo, String postre, String importe) {
 
-    //Caso concreto: sabemos cuáles son los nodos
-    String nuevaFactura =
-        "<Cliente nombre = \"" + nombre + "\">" +
-            "<Factura>" +
-            "<Fecha>" + fecha + "</Fecha>" +
-            "<Camarero>" + camarero + "</Camarero>" +
-            "<Primero>" + primero + "</Primero>" +
-            "<Segundo>" + segundo + "</Segundo>" +
-            "<Postre>" + postre + "</Postre>" +
-            "<Importe>" + importe + "</Importe>"
-            + "</Factura>" +
-            "</Cliente>";
+    String nuevaFactura = "<Factura>" +
+        "<Fecha>" + fecha + "</Fecha>" +
+        "<Camarero>" + camarero + "</Camarero>" +
+        "<Primero>" + primero + "</Primero>" +
+        "<Segundo>" + segundo + "</Segundo>" +
+        "<Postre>" + postre + "</Postre>" +
+        "<Importe>" + importe + "</Importe>"
+        + "</Factura>";
 
     if (Utilidades.conectar() != null) {
       try {
         XPathQueryService servicio = (XPathQueryService) Utilidades.col.getService("XPathQueryService", "1.0");
-        System.out.printf("Inserto: %s \n", nuevaFactura);
+
+        //Preparamos la consulta
+        ResourceSet resul = servicio.query("data(/Comandas/Cliente[@nombre = \"" + nombre + "\"]/@nombre)");
+
+        // recorrer los datos del recurso.
+        ResourceIterator i = resul.getIterator();
+
+        if (!i.hasMoreResources()) {
+
+          //Caso concreto: sabemos cuáles son los nodos
+          nuevaFactura = "<Cliente nombre = \"" + nombre + "\">" + nuevaFactura + "</Cliente>";
+          //LA CONSULTA NO DEVUELVE NADA el cliente no existe todavia
+          servicio.query("update insert " + nuevaFactura + " into /Comandas");
+          
+        } else {
+          //El cliente ya existe
+
+          //Caso concreto: sabemos cuáles son los nodos
+
+          servicio.query("update insert " + nuevaFactura + " into /Comandas/Cliente[@nombre = \"" + nombre + "\"]");
+          Resource r = i.nextResource();
+          System.out.println("--------------------------------------------");
+          System.out.println((String) r.getContent());
+        }
+        System.out.println(resul);
+
         //Consulta para insertar --> update insert ... into
-        ResourceSet result = servicio.query("update insert " + nuevaFactura + " into /Comandas");
+
         Utilidades.col.close(); //borramos
         System.out.println("Dep insertado.");
       } catch (Exception e) {
