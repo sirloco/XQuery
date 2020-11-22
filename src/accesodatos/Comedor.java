@@ -6,6 +6,7 @@ import org.xmldb.api.base.ResourceSet;
 import org.xmldb.api.modules.XPathQueryService;
 
 import javax.swing.*;
+import java.awt.*;
 import java.util.ArrayList;
 
 public class Comedor extends JFrame {
@@ -19,11 +20,13 @@ public class Comedor extends JFrame {
   private JLabel lImporte;
   private JPanel jpBotonera;
   private JButton bGuardar;
-  private JButton bLimpiar;
+  private JButton jbLimpiar;
+  private JButton jbBuscar;
+  private JButton jbBorrar;
+  private JPanel jpListado;
+  private JList jlListado;
+  private JScrollPane listadoScroll;
 
-  private static float precioPrimero = 0;
-  private static float precioSegundo = 0;
-  private static float precioPostre = 0;
 
   public Comedor() {
 
@@ -31,7 +34,13 @@ public class Comedor extends JFrame {
 
     setTitle("Comedor");
     setResizable(false);
-    setSize(520, 300);
+    setSize(500, 600);
+
+
+    // set up the menu list (a jlist)
+    String[] menuItems = {"Ping", "Traceroute", "Netstat", "Dig"};
+    jlListado.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+    jlListado.setLayoutOrientation(JList.VERTICAL);
 
 
     ArrayList<String> camareros = new ArrayList<>() {{
@@ -54,6 +63,8 @@ public class Comedor extends JFrame {
       cbPostre.addItem(postre);
     }
 
+    actualizaPrecio();
+
     bGuardar.addActionListener(e -> {
 
       String nombre = jtCliente.getText();
@@ -69,27 +80,23 @@ public class Comedor extends JFrame {
     });
 
     cbPrimero.addActionListener(e -> {
-
-      precioPrimero = Main.primeros.get((String) Main.primerosArray[cbPrimero.getSelectedIndex()]);
-
-      lImporte.setText(String.valueOf(precioPrimero + precioSegundo + precioPostre));
+      actualizaPrecio();
     });
 
     cbSegundo.addActionListener(e -> {
-
-      precioSegundo = Main.segundos.get((String) Main.segundosArray[cbSegundo.getSelectedIndex()]);
-
-      lImporte.setText(String.valueOf(precioPrimero + precioSegundo + precioPostre));
-
+      actualizaPrecio();
     });
+
     cbPostre.addActionListener(e -> {
-
-      precioPostre = Main.postres.get((String) Main.postresArray[cbPostre.getSelectedIndex()]);
-
-      lImporte.setText(String.valueOf(precioPrimero + precioSegundo + precioPostre));
-
-
+      actualizaPrecio();
     });
+  }
+
+  private void actualizaPrecio() {
+    float precioPrimero = Main.primeros.get((String) Main.primerosArray[cbPrimero.getSelectedIndex()]);
+    float precioSegundo = Main.segundos.get((String) Main.segundosArray[cbSegundo.getSelectedIndex()]);
+    float precioPostre = Main.postres.get((String) Main.postresArray[cbPostre.getSelectedIndex()]);
+    lImporte.setText((precioPrimero + precioSegundo + precioPostre) + " €");
   }
 
   //update insert <Factura><Fecha>03/12/2020</Fecha></Factura> into /Comandas/Cliente[@nombre = "Juan"]
@@ -110,25 +117,28 @@ public class Comedor extends JFrame {
       try {
         XPathQueryService servicio = (XPathQueryService) Utilidades.col.getService("XPathQueryService", "1.0");
 
-        //Preparamos la consulta
+        //Preparamos la consulta esta devuelve el nombre del cliente si existe
         ResourceSet resul = servicio.query("data(/Comandas/Cliente[@nombre = \"" + nombre + "\"]/@nombre)");
 
         // recorrer los datos del recurso.
         ResourceIterator i = resul.getIterator();
 
+
         if (!i.hasMoreResources()) {
 
-          //Caso concreto: sabemos cuáles son los nodos
+          //Caso concreto: no existe el cliente y se le añade la etiqueta cliente para hacer uno nuevo
           nuevaFactura = "<Cliente nombre = \"" + nombre + "\">" + nuevaFactura + "</Cliente>";
-          //LA CONSULTA NO DEVUELVE NADA el cliente no existe todavia
+
+          //LA CONSULTA NO DEVUELVE NADA el cliente no existe todavia insertamos a nivel de comandas
           servicio.query("update insert " + nuevaFactura + " into /Comandas");
-          
+
         } else {
           //El cliente ya existe
 
-          //Caso concreto: sabemos cuáles son los nodos
-
+          //Caso concreto: el cliente ya existe no agregamos la etiqueta cliente lo agregamos a nivel del cliente
           servicio.query("update insert " + nuevaFactura + " into /Comandas/Cliente[@nombre = \"" + nombre + "\"]");
+
+
           Resource r = i.nextResource();
           System.out.println("--------------------------------------------");
           System.out.println((String) r.getContent());
@@ -138,7 +148,7 @@ public class Comedor extends JFrame {
         //Consulta para insertar --> update insert ... into
 
         Utilidades.col.close(); //borramos
-        System.out.println("Dep insertado.");
+        System.out.println("Tickeet  insertado.");
       } catch (Exception e) {
         System.out.println("Error al insertar empleado.");
         e.printStackTrace();
@@ -148,4 +158,6 @@ public class Comedor extends JFrame {
     }
 
   }
+
+
 }
