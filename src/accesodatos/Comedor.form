@@ -96,7 +96,7 @@
                   <text value="Primero"/>
                 </properties>
               </component>
-              <component id="79c3" class="javax.swing.JComboBox" binding="comboBox1" default-binding="true">
+              <component id="79c3" class="javax.swing.JComboBox" binding="cbPrimero">
                 <constraints>
                   <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
@@ -110,7 +110,7 @@
                   <text value="Segundo"/>
                 </properties>
               </component>
-              <component id="6da3e" class="javax.swing.JComboBox" binding="comboBox2" default-binding="true">
+              <component id="6da3e" class="javax.swing.JComboBox" binding="cbSegundo">
                 <constraints>
                   <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
@@ -124,7 +124,7 @@
                   <text value="Postre"/>
                 </properties>
               </component>
-              <component id="db95a" class="javax.swing.JComboBox" binding="comboBox3" default-binding="true">
+              <component id="db95a" class="javax.swing.JComboBox" binding="cbPostre">
                 <constraints>
                   <grid row="5" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
