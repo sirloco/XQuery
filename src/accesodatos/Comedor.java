@@ -106,12 +106,17 @@ public class Comedor extends JFrame {
 
     jbBuscar.addActionListener(e -> buscaCliente(jtCliente.getText()));
 
+    jbLimpiar.addActionListener(e -> actualizaTikect(jtCliente.getText(),tjtFecha.getText()));
+
     //Borra el tiket del cliente escrito en la fecha descrita
     jbBorrar.addActionListener(e -> {
       borraTiket(jtCliente.getText(), tjtFecha.getText());
       buscaCliente(jtCliente.getText());
     });
 
+  }
+
+  private void actualizaTikect(String cliente, String fecha) {
 
 
   }
