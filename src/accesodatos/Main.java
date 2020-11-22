@@ -17,10 +17,10 @@ public class Main {
 
   //Se crea el menu contenido en Maps asociando el plato al precio Key Value
   static Map<String, Float> primeros = Map.of(
-      "Sopa de huevo", 7.2f,
+      "Sopa de huevo", 7f,
       "Judías verdes", 12.3f,
       "Berenjenas agridulces", 15.5f,
-      "Lentejas con calabaza", 8.7f
+      "Lentejas con calabaza", 8f
 
   );
 
@@ -64,7 +64,7 @@ public class Main {
     //Lista con el contenido de los nodos de cada factura de cada cliente
     List<Factura> facturas = new ArrayList<>();
     //Lista con las lineas de cada factura
-    List<LineaTiket> lineas = new ArrayList<>();
+    List<Tiket> lineas = new ArrayList<>();
 
 
     DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -133,20 +133,20 @@ public class Main {
    * @param lineas Contiene lo que seria el contenido de un ticket
    * @param fecha  Contiene la fecha del tiket
    */
-  private static void creaTikect(List<LineaTiket> lineas, String fecha, String camarero) {
+  private static void creaTikect(List<Tiket> lineas, String fecha, String camarero) {
 
     String primero = (String) primerosArray[new Random().nextInt(primerosArray.length)];
     String segundo = (String) segundosArray[new Random().nextInt(segundosArray.length)];
     String postre = (String) postresArray[new Random().nextInt(postresArray.length)];
 
     lineas.add(
-        new LineaTiket(primeros.get(primero) + segundos.get(segundo) + postres.get(postre),
+        new Tiket(primeros.get(primero) + segundos.get(segundo) + postres.get(postre),
             fecha, camarero, String.valueOf(primero),
             String.valueOf(segundo), String.valueOf(postre)));
 
   }
 
-  static void crearCliente(List<Factura> facturas, List<LineaTiket> lineas, Document document) {
+  static void crearCliente(List<Factura> facturas, List<Tiket> lineas, Document document) {
     for (Factura factura : facturas) {
 
       //Crea y añade el nodo
@@ -157,7 +157,7 @@ public class Main {
       document.getDocumentElement().appendChild(cliente); //lo añade a la raíz del documento
 
 
-      for (LineaTiket linea : lineas) {
+      for (Tiket linea : lineas) {
 
         Element tiket = document.createElement("Factura");
 
@@ -171,12 +171,12 @@ public class Main {
                     tiket.appendChild(text); //pegamos el valor*/
 
         //se añaden los hijos al nodo raiz
-        CrearElemento("Fecha", linea.getFecha(), tiket, document);
-        CrearElemento("Camarero", linea.getCamarero(), tiket, document);
-        CrearElemento("Primero", linea.getPrimero(), tiket, document);
-        CrearElemento("Segundo", linea.getSegundo(), tiket, document);
-        CrearElemento("Postre", linea.getPostre(), tiket, document);
-        CrearElemento("Importe", String.valueOf(linea.getImporte()), tiket, document);
+        CrearElemento("fecha", linea.getFecha(), tiket, document);
+        CrearElemento("camarero", linea.getCamarero(), tiket, document);
+        CrearElemento("primero", linea.getPrimero(), tiket, document);
+        CrearElemento("segundo", linea.getSegundo(), tiket, document);
+        CrearElemento("postre", linea.getPostre(), tiket, document);
+        CrearElemento("importe", String.valueOf(linea.getImporte()), tiket, document);
       }
 
     }

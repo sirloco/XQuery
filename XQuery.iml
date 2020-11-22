@@ -88,5 +88,6 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="library" name="xstream-1.4.2" level="project" />
   </component>
 </module>

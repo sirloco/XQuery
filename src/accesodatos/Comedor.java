@@ -1,13 +1,17 @@
 package accesodatos;
 
+import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.io.xml.DomDriver;
 import org.xmldb.api.base.Resource;
 import org.xmldb.api.base.ResourceIterator;
 import org.xmldb.api.base.ResourceSet;
 import org.xmldb.api.modules.XPathQueryService;
 
 import javax.swing.*;
-import java.util.ArrayList;
-import java.util.Vector;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 public class Comedor extends JFrame {
   private JPanel Principal;
@@ -25,6 +29,9 @@ public class Comedor extends JFrame {
   private JButton jbBorrar;
   private JPanel jpListado;
   private JList<String> jlListado;
+  private JLabel lPrecioPrimero;
+  private JLabel lPrecioSegundo;
+  private JLabel lPrecioPostre;
 
 
   public Comedor() {
@@ -33,52 +40,9 @@ public class Comedor extends JFrame {
 
     setTitle("Comedor");
     setResizable(false);
-    setSize(500, 600);
+    setSize(550, 600);
 
     JScrollPane listadoScroll = new JScrollPane();
-
-    DefaultListModel<String> modelo = new DefaultListModel<>();
-    modelo.addElement("USA");
-    modelo.addElement("India");
-    modelo.addElement("Vietnam");
-    modelo.addElement("Canada");
-    modelo.addElement("Denmark");
-    modelo.addElement("France");
-    modelo.addElement("Great Britain");
-    modelo.addElement("Great Britain");
-    modelo.addElement("Great Britain");
-    modelo.addElement("Great Britain");
-    modelo.addElement("Great Britain");
-    modelo.addElement("Great Britain");
-    modelo.addElement("Great Britain");
-    modelo.addElement("Great Britain");
-    modelo.addElement("Great Britain");
-    modelo.addElement("Great Britain");
-    modelo.addElement("Great Britain");
-    modelo.addElement("Great Britain");
-    modelo.addElement("Great Britain");
-    modelo.addElement("Great Britain");
-    modelo.addElement("Great Britain");
-    modelo.addElement("Great Britain");
-    modelo.addElement("Great Britain");
-    modelo.addElement("Great Britain");
-    modelo.addElement("Great Britain");
-    modelo.addElement("Great Britain");
-    modelo.addElement("Great Britain");
-    modelo.addElement("Great Britain");
-    modelo.addElement("Great Britain");
-    modelo.addElement("Great Britain");
-    modelo.addElement("Great Britain");
-    modelo.addElement("Great Britain");
-    modelo.addElement("Great Britain");
-    modelo.addElement("Great Britain");
-
-
-
-
-    jlListado.setModel(modelo);
-
-
 
     ArrayList<String> camareros = new ArrayList<>() {{
       add("Juanito");
@@ -100,7 +64,16 @@ public class Comedor extends JFrame {
       cbPostre.addItem(postre);
     }
 
-    actualizaPrecio();
+    /////////////////////// Se pone Fecha Actual ///////////////////////
+    Calendar f = Calendar.getInstance();
+    //Como el mes lo hace mal porque  los meses los hace de enero 0 a diciembre 11 mostraba el mes anterior
+    SimpleDateFormat mes = new java.text.SimpleDateFormat("MM");
+
+    tjtFecha.setText(f.get(Calendar.DATE) + "/" + mes.format(f.getTime()) + "/" + f.get(Calendar.YEAR));
+    ////////////////////////////////////////////////////////////////////
+
+    //Actualiza el importe total de los platos
+    actualizaPrecios();
 
     bGuardar.addActionListener(e -> {
 
@@ -111,43 +84,184 @@ public class Comedor extends JFrame {
       String segundo = (String) Main.segundosArray[cbSegundo.getSelectedIndex()];
       String postre = (String) Main.postresArray[cbPostre.getSelectedIndex()];
 
+      if (nombre.isEmpty() || fecha.isEmpty()) {
+        JOptionPane.showMessageDialog(null, "Campos obligatorios fecha y nombre",
+            "Error", JOptionPane.INFORMATION_MESSAGE);
+      } else {
+        insertaFactura(nombre, fecha, camarero, primero, segundo, postre,
+            String.valueOf(Main.primeros.get(primero) + Main.segundos.get(segundo) + Main.postres.get(postre)));
 
-      insertaFactura(nombre, fecha, camarero, primero, segundo, postre,
-          String.valueOf(Main.primeros.get(primero) + Main.segundos.get(segundo) + Main.postres.get(postre)));
+        buscaCliente(nombre);
+
+      }
     });
 
-    cbPrimero.addActionListener(e -> {
-      actualizaPrecio();
+
+    //Actualizar precios al cambiar opcion en el combobox
+    cbPrimero.addActionListener(e -> actualizaPrecios());
+
+    cbSegundo.addActionListener(e -> actualizaPrecios());
+
+    cbPostre.addActionListener(e -> actualizaPrecios());
+
+    jbBuscar.addActionListener(e -> buscaCliente(jtCliente.getText()));
+
+    //Borra el tiket del cliente escrito en la fecha descrita
+    jbBorrar.addActionListener(e -> {
+      borraTiket(jtCliente.getText(), tjtFecha.getText());
+      buscaCliente(jtCliente.getText());
     });
 
-    cbSegundo.addActionListener(e -> {
-      actualizaPrecio();
-    });
 
-    cbPostre.addActionListener(e -> {
-      actualizaPrecio();
-    });
+
   }
 
-  private void actualizaPrecio() {
+  private void borraTiket(String cliente, String fecha) {
+
+    String consulta = "/Comandas/Cliente[@nombre=\"" + cliente + "\"]/Factura[fecha=\"" + fecha + "\"]";
+    if (Utilidades.conectar() != null) {
+
+      try {
+        System.out.printf("Borro el tiket de : %s\n", cliente);
+        XPathQueryService servicio = (XPathQueryService) Utilidades.col.getService("XPathQueryService", "1.0");
+
+
+        //Preparamos la consulta esta devuelve el nombre del cliente si existe
+        ResourceSet resul = servicio.query(consulta);
+
+        // recorrer los datos del recurso.
+        ResourceIterator i = resul.getIterator();
+
+        if (!i.hasMoreResources()) {
+
+          System.out.println("No existe el Tiket");
+
+        } else {
+
+          ResourceSet result = servicio.query("update delete " + consulta);
+
+          System.out.println(result);
+          Utilidades.col.close();
+          System.out.println("Tiket borrado.");
+
+        }
+
+      } catch (Exception e) {
+        System.out.println("Error al borrar.");
+        e.printStackTrace();
+      }
+
+    } else {
+      System.out.println("Error en la conexión. Comprueba datos.");
+    }
+
+  }
+
+  private void buscaCliente(String nombre) {
+
+    if (Utilidades.conectar() != null) {
+      try {
+        XPathQueryService servicio = (XPathQueryService) Utilidades.col.getService("XPathQueryService", "1.0");
+
+        //Preparamos la consulta esta devuelve el nombre del cliente si existe
+        ResourceSet resul = servicio.query("data(/Comandas/Cliente[@nombre = \"" + nombre + "\"]/@nombre)");
+
+        // recorrer los datos del recurso.
+        ResourceIterator i = resul.getIterator();
+
+        if (!i.hasMoreResources()) {
+
+          System.out.println("No existe el cliente");
+
+        } else {
+
+          //El cliente ya existe
+          //Preparamos la consulta esta devuelve el nombre del cliente si existe
+          resul = servicio.query("/Comandas/Cliente[@nombre = \"" + nombre + "\"]/Factura");
+
+          // recorrer los datos del recurso.
+          i = resul.getIterator();
+
+          //Se crea la lista de tikets del cliente
+          List<Tiket> tikets = new ArrayList<>();
+
+          //Se recorren todos los tikets del cliente
+          while (i.hasMoreResources()) {
+
+            //Se obtiene cada  nodo que corresponde con cada tiket
+            Resource r = i.nextResource();
+
+            //Se añaden a una lista de objetos tiket para poder tratarlo mejor
+            tikets.add(creaObjeto(r.getContent().toString()));
+
+          }
+
+          muestraTikets(tikets, nombre);
+
+          System.out.println("Tikets mostrados par el cliente " + nombre);
+
+        }
+        Utilidades.col.close(); //borramos
+        System.out.println("Cliente Encontrado.");
+      } catch (Exception e) {
+        System.out.println("Error al Buscar cliente.");
+        e.printStackTrace();
+      }
+    } else {
+      System.out.println("Error en la conexión. Comprueba datos.");
+    }
+
+
+  }
+
+  private void muestraTikets(List<Tiket> tikets, String nombre) {
+
+    DefaultListModel<String> modelo = new DefaultListModel<>();
+
+
+    modelo.addElement(nombre);
+    modelo.addElement("===========================");
+    modelo.addElement("");
+    modelo.addElement("");
+
+    for (Tiket tiket : tikets) {
+
+      modelo.addElement("----------------------------------------------");
+      modelo.addElement("Fecha: " + tiket.getFecha());
+      modelo.addElement("Camarero: " + tiket.getCamarero());
+      modelo.addElement("Primero: " + tiket.getPrimero());
+      modelo.addElement("Segundo: " + tiket.getSegundo());
+      modelo.addElement("Postre: " + tiket.getPostre());
+      modelo.addElement("Total: " + tiket.getImporte());
+    }
+    modelo.addElement("----------------------------------------------");
+
+    modelo.addElement("");
+
+
+    jlListado.setModel(modelo);
+  }
+
+  private void actualizaPrecios() {
     float precioPrimero = Main.primeros.get((String) Main.primerosArray[cbPrimero.getSelectedIndex()]);
     float precioSegundo = Main.segundos.get((String) Main.segundosArray[cbSegundo.getSelectedIndex()]);
     float precioPostre = Main.postres.get((String) Main.postresArray[cbPostre.getSelectedIndex()]);
+    lPrecioPrimero.setText(precioPrimero + " €");
+    lPrecioSegundo.setText(precioSegundo + " €");
+    lPrecioPostre.setText(precioPostre + " €");
     lImporte.setText((precioPrimero + precioSegundo + precioPostre) + " €");
   }
 
-  //update insert <Factura><Fecha>03/12/2020</Fecha></Factura> into /Comandas/Cliente[@nombre = "Juan"]
-  //para insertar una factura aun cliente concreto
-
-  private void insertaFactura(String nombre, String fecha, String camarero, String primero, String segundo, String postre, String importe) {
+  private void insertaFactura(String nombre, String fecha, String camarero, String primero, String
+      segundo, String postre, String importe) {
 
     String nuevaFactura = "<Factura>" +
-        "<Fecha>" + fecha + "</Fecha>" +
-        "<Camarero>" + camarero + "</Camarero>" +
-        "<Primero>" + primero + "</Primero>" +
-        "<Segundo>" + segundo + "</Segundo>" +
-        "<Postre>" + postre + "</Postre>" +
-        "<Importe>" + importe + "</Importe>"
+        "<fecha>" + fecha + "</fecha>" +
+        "<camarero>" + camarero + "</camarero>" +
+        "<primero>" + primero + "</primero>" +
+        "<segundo>" + segundo + "</segundo>" +
+        "<postre>" + postre + "</postre>" +
+        "<importe>" + importe + "</importe>"
         + "</Factura>";
 
     if (Utilidades.conectar() != null) {
@@ -180,9 +294,6 @@ public class Comedor extends JFrame {
           System.out.println("--------------------------------------------");
           System.out.println((String) r.getContent());
         }
-        System.out.println(resul);
-
-        //Consulta para insertar --> update insert ... into
 
         Utilidades.col.close(); //borramos
         System.out.println("Tickeet  insertado.");
@@ -195,5 +306,21 @@ public class Comedor extends JFrame {
     }
 
   }
+
+  /**
+   * Crea objetos a partir de un nodo de xml
+   *
+   * @param xml String que devuelve la consulta
+   * @return devuelve un objeto
+   */
+  public Tiket creaObjeto(String xml) {
+
+    XStream xstream = new XStream(new DomDriver());
+    xstream.alias("Factura", Tiket.class);
+    Tiket t = (Tiket) xstream.fromXML(xml);
+
+    return t;
+  }
+
 
 }

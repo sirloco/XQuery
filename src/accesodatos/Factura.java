@@ -1,7 +1,6 @@
 package accesodatos;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 public class Factura implements Serializable {
@@ -9,10 +8,10 @@ public class Factura implements Serializable {
     private String nombre;
 
 
-    private List<LineaTiket> lineas;
+    private List<Tiket> lineas;
 
 
-    public Factura(String nombre, List<LineaTiket> lineas) {
+    public Factura(String nombre, List<Tiket> lineas) {
         this.nombre = nombre;
         this.lineas = lineas;
     }
