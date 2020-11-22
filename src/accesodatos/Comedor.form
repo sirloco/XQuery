@@ -215,21 +215,6 @@
         <properties/>
         <border type="none"/>
         <children>
-          <component id="f96d7" class="javax.swing.JList" binding="jlListado">
-            <constraints>
-              <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="0" anchor="0" fill="3" indent="0" use-parent-layout="false">
-                <preferred-size width="150" height="50"/>
-              </grid>
-            </constraints>
-            <properties>
-              <model>
-                <item value="hola"/>
-                <item value="que tal"/>
-              </model>
-              <selectionMode value="0"/>
-              <valueIsAdjusting value="true"/>
-            </properties>
-          </component>
           <vspacer id="762d4">
             <constraints>
               <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false">
@@ -237,6 +222,23 @@
               </grid>
             </constraints>
           </vspacer>
+          <scrollpane id="3ba8e">
+            <constraints>
+              <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <component id="f96d7" class="javax.swing.JList" binding="jlListado">
+                <constraints/>
+                <properties>
+                  <model/>
+                  <selectionMode value="0"/>
+                  <valueIsAdjusting value="true"/>
+                </properties>
+              </component>
+            </children>
+          </scrollpane>
         </children>
       </grid>
       <hspacer id="fb51">

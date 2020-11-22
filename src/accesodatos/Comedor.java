@@ -6,8 +6,8 @@ import org.xmldb.api.base.ResourceSet;
 import org.xmldb.api.modules.XPathQueryService;
 
 import javax.swing.*;
-import java.awt.*;
 import java.util.ArrayList;
+import java.util.Vector;
 
 public class Comedor extends JFrame {
   private JPanel Principal;
@@ -24,8 +24,7 @@ public class Comedor extends JFrame {
   private JButton jbBuscar;
   private JButton jbBorrar;
   private JPanel jpListado;
-  private JList jlListado;
-  private JScrollPane listadoScroll;
+  private JList<String> jlListado;
 
 
   public Comedor() {
@@ -36,11 +35,49 @@ public class Comedor extends JFrame {
     setResizable(false);
     setSize(500, 600);
 
+    JScrollPane listadoScroll = new JScrollPane();
 
-    // set up the menu list (a jlist)
-    String[] menuItems = {"Ping", "Traceroute", "Netstat", "Dig"};
-    jlListado.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-    jlListado.setLayoutOrientation(JList.VERTICAL);
+    DefaultListModel<String> modelo = new DefaultListModel<>();
+    modelo.addElement("USA");
+    modelo.addElement("India");
+    modelo.addElement("Vietnam");
+    modelo.addElement("Canada");
+    modelo.addElement("Denmark");
+    modelo.addElement("France");
+    modelo.addElement("Great Britain");
+    modelo.addElement("Great Britain");
+    modelo.addElement("Great Britain");
+    modelo.addElement("Great Britain");
+    modelo.addElement("Great Britain");
+    modelo.addElement("Great Britain");
+    modelo.addElement("Great Britain");
+    modelo.addElement("Great Britain");
+    modelo.addElement("Great Britain");
+    modelo.addElement("Great Britain");
+    modelo.addElement("Great Britain");
+    modelo.addElement("Great Britain");
+    modelo.addElement("Great Britain");
+    modelo.addElement("Great Britain");
+    modelo.addElement("Great Britain");
+    modelo.addElement("Great Britain");
+    modelo.addElement("Great Britain");
+    modelo.addElement("Great Britain");
+    modelo.addElement("Great Britain");
+    modelo.addElement("Great Britain");
+    modelo.addElement("Great Britain");
+    modelo.addElement("Great Britain");
+    modelo.addElement("Great Britain");
+    modelo.addElement("Great Britain");
+    modelo.addElement("Great Britain");
+    modelo.addElement("Great Britain");
+    modelo.addElement("Great Britain");
+    modelo.addElement("Great Britain");
+
+
+
+
+    jlListado.setModel(modelo);
+
 
 
     ArrayList<String> camareros = new ArrayList<>() {{
@@ -158,6 +195,5 @@ public class Comedor extends JFrame {
     }
 
   }
-
 
 }
