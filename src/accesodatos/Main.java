@@ -11,6 +11,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.*;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+import java.io.IOException;
 import java.util.*;
 
 public class Main {
@@ -46,7 +47,7 @@ public class Main {
   static Object[] postresArray = postres.keySet().toArray();
 
 
-  public static void main(String[] args) {
+  public static void main(String[] args) throws IOException {
 
     crearXml();
     Utilidades.cargar_en_coleccion();

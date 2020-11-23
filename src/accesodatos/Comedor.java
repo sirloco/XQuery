@@ -10,8 +10,13 @@ import org.xmldb.api.modules.XPathQueryService;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.logging.FileHandler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.logging.XMLFormatter;
 
 public class Comedor extends JFrame {
     private JPanel Principal;
@@ -33,8 +38,37 @@ public class Comedor extends JFrame {
     private JLabel lPrecioSegundo;
     private JLabel lPrecioPostre;
 
+    //Se establece el nombre del registro
+    static Logger logger = Logger.getLogger("MiLog");
+
+    //Se establece la ubicacion del registro true para añadir nuevos no sobreescribir
+    static FileHandler fh;
+
+    static {
+        try {
+            fh = new FileHandler(".\\Archivos\\log.xml", true);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     public Comedor() {
+
+        //Establecer si se muestran por pantalla los registros
+        logger.setUseParentHandlers(false);
+
+        //Se establece el formato del archivo
+        XMLFormatter formatter = new XMLFormatter();
+
+        //Se aplica el formato
+        fh.setFormatter(formatter);
+
+        //Se establece el nivel de seguridad
+        logger.setLevel(Level.ALL);
+
+        //Se añade al handler
+        logger.addHandler(fh);
 
         add(Principal);
 
@@ -172,7 +206,6 @@ public class Comedor extends JFrame {
 
                 } else {
 
-                    //"update value /departamentos/DEP_ROW[DEPT_NO=" + dep + "]/DNOMBRE with data('NUEVO NOMBRE') ")
                     ResourceSet result = servicio.query("update replace " + consulta + " with " + tiket);
 
                     System.out.println(result);
@@ -269,6 +302,9 @@ public class Comedor extends JFrame {
 
                         //Se añaden a una lista de objetos tiket para poder tratarlo mejor
                         tikets.add(creaObjeto(r.getContent().toString()));
+
+                        logger.info("\n" + nombre + "\n" +
+                                "----------------------------------------------" + " ->> " + r.getContent().toString());
 
                     }
 
@@ -393,9 +429,8 @@ public class Comedor extends JFrame {
 
         XStream xstream = new XStream(new DomDriver());
         xstream.alias("Factura", Tiket.class);
-        Tiket t = (Tiket) xstream.fromXML(xml);
 
-        return t;
+        return (Tiket) xstream.fromXML(xml);
     }
 
 
