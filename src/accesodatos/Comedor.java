@@ -74,7 +74,7 @@ public class Comedor extends JFrame {
 
         setTitle("Comedor");
         setResizable(false);
-        setSize(550, 600);
+        setSize(570, 600);
 
         JScrollPane listadoScroll = new JScrollPane();
 
@@ -164,7 +164,6 @@ public class Comedor extends JFrame {
         cbPostre.addActionListener(e -> actualizaPrecios());
 
         jbBuscar.addActionListener(e -> buscaCliente(jtCliente.getText()));
-
 
         //Borra el tiket del cliente escrito en la fecha descrita
         jbBorrar.addActionListener(e -> {
@@ -303,11 +302,11 @@ public class Comedor extends JFrame {
                         //Se añaden a una lista de objetos tiket para poder tratarlo mejor
                         tikets.add(creaObjeto(r.getContent().toString()));
 
-                        logger.info("\n" + nombre + "\n" +
-                                "----------------------------------------------" + " ->> " + r.getContent().toString());
+                        logger.info((String)r.getContent());
 
                     }
 
+                    fh.close();
                     muestraTikets(tikets, nombre);
 
                     System.out.println("Tikets mostrados par el cliente " + nombre);
@@ -338,7 +337,7 @@ public class Comedor extends JFrame {
 
         for (Tiket tiket : tikets) {
 
-            modelo.addElement("----------------------------------------------");
+            modelo.addElement("------------------------------");
             modelo.addElement("Fecha: " + tiket.getFecha());
             modelo.addElement("Camarero: " + tiket.getCamarero());
             modelo.addElement("Primero: " + tiket.getPrimero());
@@ -346,7 +345,7 @@ public class Comedor extends JFrame {
             modelo.addElement("Postre: " + tiket.getPostre());
             modelo.addElement("Total: " + tiket.getImporte());
         }
-        modelo.addElement("----------------------------------------------");
+        modelo.addElement("------------------------------");
 
         modelo.addElement("");
 
