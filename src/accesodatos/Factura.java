@@ -5,23 +5,16 @@ import java.util.List;
 
 public class Factura implements Serializable {
 
-    private String nombre;
+    private final String nombre;
 
 
-    private List<Tiket> lineas;
-
-
-    public Factura(String nombre, List<Tiket> lineas) {
+    public Factura(String nombre) {
         this.nombre = nombre;
-        this.lineas = lineas;
     }
 
     public String getNombre() {
         return nombre;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
 
 }

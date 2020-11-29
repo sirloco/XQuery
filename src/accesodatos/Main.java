@@ -11,7 +11,6 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.*;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import java.io.IOException;
 import java.util.*;
 
 public class Main {
@@ -47,7 +46,7 @@ public class Main {
   static Object[] postresArray = postres.keySet().toArray();
 
 
-  public static void main(String[] args) throws IOException {
+  public static void main(String[] args) {
 
     crearXml();
     Utilidades.cargar_en_coleccion();
@@ -78,41 +77,41 @@ public class Main {
 
 
       //Se crean los tikects pedro tendra tres tikects
-      creaTikect(lineas, "03/02/2020", "Juanito");
-      creaTikect(lineas, "04/02/2020", "Merche");
-      creaTikect(lineas, "05/02/2020", "Juanito");
+      creaTikect(1,lineas, "03/02/2020", "Juanito");
+      creaTikect(2,lineas, "04/02/2020", "Merche");
+      creaTikect(3,lineas, "05/02/2020", "Juanito");
 
-      facturas.add(new Factura("pedro", lineas));
+      facturas.add(new Factura("pedro"));
       crearCliente(facturas, lineas, document);
 
       lineas.clear();
       facturas.clear();
 
-      creaTikect(lineas, "03/02/2020", "Juanito");
-      creaTikect(lineas, "04/02/2020", "Juanito");
-      creaTikect(lineas, "05/02/2020", "Juanito");
-      creaTikect(lineas, "06/02/2020", "Juanito");
-      creaTikect(lineas, "07/02/2020", "Merche");
-      creaTikect(lineas, "08/02/2020", "Juanito");
+      creaTikect(4,lineas, "03/02/2020", "Juanito");
+      creaTikect(5,lineas, "04/02/2020", "Juanito");
+      creaTikect(6,lineas, "05/02/2020", "Juanito");
+      creaTikect(7,lineas, "06/02/2020", "Juanito");
+      creaTikect(8,lineas, "07/02/2020", "Merche");
+      creaTikect(9,lineas, "08/02/2020", "Juanito");
 
-      facturas.add(new Factura("Juan", lineas));
+      facturas.add(new Factura("Juan"));
       crearCliente(facturas, lineas, document);
 
       lineas.clear();
       facturas.clear();
 
-      creaTikect(lineas, "10/02/2020", "Juanito");
+      creaTikect(10,lineas, "10/02/2020", "Juanito");
 
-      facturas.add(new Factura("Andres", lineas));
+      facturas.add(new Factura("Andres"));
       crearCliente(facturas, lineas, document);
 
       lineas.clear();
       facturas.clear();
 
-      creaTikect(lineas, "03/02/2020", "Merche");
-      creaTikect(lineas, "04/02/2020", "Juanito");
+      creaTikect(11,lineas, "03/02/2020", "Merche");
+      creaTikect(12,lineas, "04/02/2020", "Juanito");
 
-      facturas.add(new Factura("Rosa", lineas));
+      facturas.add(new Factura("Rosa"));
       crearCliente(facturas, lineas, document);
 
 
@@ -134,14 +133,14 @@ public class Main {
    * @param lineas Contiene lo que seria el contenido de un ticket
    * @param fecha  Contiene la fecha del tiket
    */
-  private static void creaTikect(List<Tiket> lineas, String fecha, String camarero) {
+  private static void creaTikect(int id, List<Tiket> lineas, String fecha, String camarero) {
 
     String primero = (String) primerosArray[new Random().nextInt(primerosArray.length)];
     String segundo = (String) segundosArray[new Random().nextInt(segundosArray.length)];
     String postre = (String) postresArray[new Random().nextInt(postresArray.length)];
 
     lineas.add(
-        new Tiket(primeros.get(primero) + segundos.get(segundo) + postres.get(postre),
+        new Tiket(id,primeros.get(primero) + segundos.get(segundo) + postres.get(postre),
             fecha, camarero, String.valueOf(primero),
             String.valueOf(segundo), String.valueOf(postre)));
 
@@ -172,6 +171,7 @@ public class Main {
                     tiket.appendChild(text); //pegamos el valor*/
 
         //se añaden los hijos al nodo raiz
+        CrearElemento("id", String.valueOf(linea.getId()), tiket, document);
         CrearElemento("fecha", linea.getFecha(), tiket, document);
         CrearElemento("camarero", linea.getCamarero(), tiket, document);
         CrearElemento("primero", linea.getPrimero(), tiket, document);
