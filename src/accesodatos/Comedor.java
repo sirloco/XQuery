@@ -95,7 +95,6 @@ public class Comedor extends JFrame {
       cbPostre.addItem(postre);
     }
 
-
     jtId.setText(idDisponible());
 
     /////////////////////// Se pone Fecha Actual ///////////////////////
@@ -120,7 +119,6 @@ public class Comedor extends JFrame {
       String segundo = (String) Main.segundosArray[cbSegundo.getSelectedIndex()];
       String postre = (String) Main.postresArray[cbPostre.getSelectedIndex()];
 
-
       boolean falloEnteros = false;
       boolean idRepetido = false;
       try {
@@ -134,35 +132,34 @@ public class Comedor extends JFrame {
         falloEnteros = true;
       }
 
+      if (nombre.isEmpty() || fecha.isEmpty() || id.isEmpty()) {
 
-      if (nombre.isEmpty() || fecha.isEmpty()) {
-
-        JOptionPane.showMessageDialog(null, "Campos obligatorios fecha y nombre",
-            "Error", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(null, "Campos obligatorios fecha y nombre e id",
+          "Error", JOptionPane.INFORMATION_MESSAGE);
 
       } else if (falloEnteros) {
 
         JOptionPane.showMessageDialog(null, "Solo numeros enteros ne id",
-            "Error", JOptionPane.INFORMATION_MESSAGE);
+          "Error", JOptionPane.INFORMATION_MESSAGE);
 
       } else if (idRepetido) {
 
         JOptionPane.showMessageDialog(null, "id Repetido elige otro",
-            "Error", JOptionPane.INFORMATION_MESSAGE);
+          "Error", JOptionPane.INFORMATION_MESSAGE);
 
       } else {
         insertaFactura(id, nombre, fecha, camarero, primero, segundo, postre,
-            String.valueOf(Main.primeros.get(primero) + Main.segundos.get(segundo) + Main.postres.get(postre)));
+          String.valueOf(Main.primeros.get(primero) + Main.segundos.get(segundo) + Main.postres.get(postre)));
 
-        buscaCliente(nombre);
+        buscaCliente(nombre, fecha, id);
 
       }
     });
 
-
     //Boton actualizar
     jbLimpiar.addActionListener(e -> {
 
+      String id = jtId.getText();
       String nombre = jtCliente.getText();
       String fecha = tjtFecha.getText();
       String camarero = camareros.get(cbCamareros.getSelectedIndex());
@@ -170,15 +167,24 @@ public class Comedor extends JFrame {
       String segundo = (String) Main.segundosArray[cbSegundo.getSelectedIndex()];
       String postre = (String) Main.postresArray[cbPostre.getSelectedIndex()];
 
-      if (nombre.isEmpty() || fecha.isEmpty()) {
+      boolean existe = buscaIdTiket(id);
+
+      if (nombre.isEmpty()) {
+
         JOptionPane.showMessageDialog(null, "Campos obligatorios fecha y nombre",
-            "Error", JOptionPane.INFORMATION_MESSAGE);
+          "Error", JOptionPane.INFORMATION_MESSAGE);
+
+      } else if (!existe) {
+
+        JOptionPane.showMessageDialog(null, "id no existe en la base de datos",
+          "Error", JOptionPane.INFORMATION_MESSAGE);
+
       } else {
 
-        actualizaTikect(nombre, fecha, camarero, primero, segundo, postre,
-            String.valueOf(Main.primeros.get(primero) + Main.segundos.get(segundo) + Main.postres.get(postre)));
+        actualizaTikect(id, nombre, fecha, camarero, primero, segundo, postre,
+          String.valueOf(Main.primeros.get(primero) + Main.segundos.get(segundo) + Main.postres.get(postre)));
 
-        buscaCliente(nombre);
+        buscaCliente(nombre, fecha, id);
 
       }
 
@@ -191,17 +197,17 @@ public class Comedor extends JFrame {
 
     cbPostre.addActionListener(e -> actualizaPrecios());
 
-    jbBuscar.addActionListener(e -> buscaCliente(jtCliente.getText()));
+    jbBuscar.addActionListener(e -> buscaCliente(jtCliente.getText(),tjtFecha.getText(),jtId.getText()));
 
     //Borra el tiket del cliente escrito en la fecha descrita
     jbBorrar.addActionListener(e -> {
 
       if (jtCliente.getText().isEmpty() && jtId.getText().isEmpty())
         JOptionPane.showMessageDialog(null, "Campo obligatorio nombre o id",
-            "Error", JOptionPane.INFORMATION_MESSAGE);
+          "Error", JOptionPane.INFORMATION_MESSAGE);
       else {
         borraTiket(jtCliente.getText(), tjtFecha.getText(), jtId.getText());
-        buscaCliente(jtCliente.getText());
+        buscaCliente(jtCliente.getText(),tjtFecha.getText(),jtId.getText());
       }
     });
 
@@ -272,23 +278,29 @@ public class Comedor extends JFrame {
     return identificador;
   }
 
-  private void actualizaTikect(String cliente, String fecha, String camarero, String primero, String segundo, String postre, String importe) {
+  private void actualizaTikect(String id, String cliente, String fecha, String camarero, String primero, String
+    segundo, String postre, String importe) {
 
     String tiket = "<Factura>" +
-        "<fecha>" + fecha + "</fecha>" +
-        "<camarero>" + camarero + "</camarero>" +
-        "<primero>" + primero + "</primero>" +
-        "<segundo>" + segundo + "</segundo>" +
-        "<postre>" + postre + "</postre>" +
-        "<importe>" + importe + "</importe>"
-        + "</Factura>";
+      "<id>" + id + "</id>" +
+      "<fecha>" + fecha + "</fecha>" +
+      "<camarero>" + camarero + "</camarero>" +
+      "<primero>" + primero + "</primero>" +
+      "<segundo>" + segundo + "</segundo>" +
+      "<postre>" + postre + "</postre>" +
+      "<importe>" + importe + "</importe>"
+      + "</Factura>";
 
+    //SE inicializa la consulta solo con el nombre de cliente de primeras
+    String consulta = "/Comandas/Cliente[@nombre=\"" + cliente + "\"]";
 
-    String consulta = "/Comandas/Cliente[@nombre=\"" + cliente + "\"]/Factura[fecha=\"" + fecha + "\"]";
+    //Luego en funcion de si se ha puesto la fecha o no se añade el id
+    consulta += !fecha.isEmpty() ? "/Factura[fecha=\"" + fecha + "\"][id=\"" + id + "\"]" : "/Factura[id=\"" + id + "\"]";
 
     if (Utilidades.conectar() != null) {
 
       try {
+
         System.out.printf("Actualizo el tiket de : %s\n", cliente);
         XPathQueryService servicio = (XPathQueryService) Utilidades.col.getService("XPathQueryService", "1.0");
 
@@ -358,6 +370,9 @@ public class Comedor extends JFrame {
 
         if (!i.hasMoreResources()) {
 
+          JOptionPane.showMessageDialog(null, "No Existe el tiket que quieres actualizar",
+            "Error", JOptionPane.INFORMATION_MESSAGE);
+
           System.out.println("No existe el Tiket");
 
         } else {
@@ -381,19 +396,41 @@ public class Comedor extends JFrame {
 
   }
 
-  private void buscaCliente(String nombre) {
+  private void buscaCliente(String nombre, String fecha, String id) {
+
+    /////////////////////////// construyo la jodida consulta ////////////////////////////////
+
+    String consulta = "/Comandas/Cliente";
+
+    if (!nombre.isEmpty())
+      consulta += "[@nombre=\"" + nombre + "\"]";
+
+    if (!fecha.isEmpty())
+      consulta += "/Factura[fecha=\"" + fecha + "\"]";
+
+    if (!id.isEmpty() && !fecha.isEmpty())
+      consulta += "[id = " + id + "]";
+    else if (!id.isEmpty())
+      consulta += "/Factura[id = \"" + id + "\"]";
+
+    ////////////////////////////////////////////////////////////////////////////////////////////
 
     if (Utilidades.conectar() != null) {
+
       try {
+
         XPathQueryService servicio = (XPathQueryService) Utilidades.col.getService("XPathQueryService", "1.0");
 
         //Preparamos la consulta esta devuelve el nombre del cliente si existe
-        ResourceSet resul = servicio.query("data(/Comandas/Cliente[@nombre = \"" + nombre + "\"]/@nombre)");
+        ResourceSet resul = servicio.query(consulta);
 
         // recorrer los datos del recurso.
         ResourceIterator i = resul.getIterator();
 
         if (!i.hasMoreResources()) {
+
+          JOptionPane.showMessageDialog(null, "No encuentro el cliente",
+            "Error", JOptionPane.INFORMATION_MESSAGE);
 
           System.out.println("No existe el cliente");
 
@@ -401,7 +438,7 @@ public class Comedor extends JFrame {
 
           //El cliente ya existe
           //Preparamos la consulta esta devuelve el nombre del cliente si existe
-          resul = servicio.query("/Comandas/Cliente[@nombre = \"" + nombre + "\"]/Factura");
+          resul = servicio.query(consulta);
 
           // recorrer los datos del recurso.
           i = resul.getIterator();
@@ -423,6 +460,7 @@ public class Comedor extends JFrame {
           }
 
           fh.close();
+
           muestraTikets(tikets, nombre);
 
           System.out.println("Tikets mostrados par el cliente " + nombre);
@@ -445,6 +483,8 @@ public class Comedor extends JFrame {
 
     DefaultListModel<String> modelo = new DefaultListModel<>();
 
+    if(nombre.isEmpty())
+      nombre = traeNombre(tikets.get(0).getId());
 
     modelo.addElement(nombre);
     modelo.addElement("===========================");
@@ -454,6 +494,7 @@ public class Comedor extends JFrame {
     for (Tiket tiket : tikets) {
 
       modelo.addElement("------------------------------");
+      modelo.addElement("Id: " + tiket.getId());
       modelo.addElement("Fecha: " + tiket.getFecha());
       modelo.addElement("Camarero: " + tiket.getCamarero());
       modelo.addElement("Primero: " + tiket.getPrimero());
@@ -465,8 +506,37 @@ public class Comedor extends JFrame {
 
     modelo.addElement("");
 
-
     jlListado.setModel(modelo);
+  }
+
+  private String traeNombre(int id) {
+    String nombre = "";
+
+    if (Utilidades.conectar() != null) {
+      try {
+        XPathQueryService servicio = (XPathQueryService) Utilidades.col.getService("XPathQueryService", "1.0");
+
+        //Preparamos la consulta esta devuelve el id
+        ResourceSet ide = servicio.query("for $nom in /Comandas/Cliente\n" +
+          "let $nombre:=data($nom/@nombre)\n" +
+          "let $id:=data($nom/Factura/id)\n" +
+          "return if($id=\""+id+"\") then data(<nombre>{$nombre}</nombre>) else()");
+
+        Resource r = ide.getIterator().nextResource();
+
+        nombre = r.getContent().toString();
+
+        Utilidades.col.close();
+
+      } catch (Exception e) {
+        System.out.println("Error al Buscar cliente.");
+        e.printStackTrace();
+      }
+    } else {
+      System.out.println("Error en la conexión. Comprueba datos.");
+    }
+
+    return nombre;
   }
 
   private void actualizaPrecios() {
@@ -480,17 +550,17 @@ public class Comedor extends JFrame {
   }
 
   private void insertaFactura(String id, String nombre, String fecha, String camarero, String primero, String
-      segundo, String postre, String importe) {
+    segundo, String postre, String importe) {
 
     String nuevaFactura = "<Factura>" +
-        "<id>" + id + "</id>" +
-        "<fecha>" + fecha + "</fecha>" +
-        "<camarero>" + camarero + "</camarero>" +
-        "<primero>" + primero + "</primero>" +
-        "<segundo>" + segundo + "</segundo>" +
-        "<postre>" + postre + "</postre>" +
-        "<importe>" + importe + "</importe>"
-        + "</Factura>";
+      "<id>" + id + "</id>" +
+      "<fecha>" + fecha + "</fecha>" +
+      "<camarero>" + camarero + "</camarero>" +
+      "<primero>" + primero + "</primero>" +
+      "<segundo>" + segundo + "</segundo>" +
+      "<postre>" + postre + "</postre>" +
+      "<importe>" + importe + "</importe>"
+      + "</Factura>";
 
     if (Utilidades.conectar() != null) {
       try {
@@ -501,7 +571,6 @@ public class Comedor extends JFrame {
 
         // recorrer los datos del recurso.
         ResourceIterator i = resul.getIterator();
-
 
         if (!i.hasMoreResources()) {
 
@@ -516,7 +585,6 @@ public class Comedor extends JFrame {
 
           //Caso concreto: el cliente ya existe no agregamos la etiqueta cliente lo agregamos a nivel del cliente
           servicio.query("update insert " + nuevaFactura + " into /Comandas/Cliente[@nombre = \"" + nombre + "\"]");
-
 
           Resource r = i.nextResource();
           System.out.println("--------------------------------------------");

@@ -1018,3 +1018,203 @@
   <message>&lt;Factura&gt;&lt;id&gt;12&lt;/id&gt;&lt;fecha&gt;04/02/2020&lt;/fecha&gt;&lt;camarero&gt;Juanito&lt;/camarero&gt;&lt;primero&gt;Lentejas con calabaza&lt;/primero&gt;&lt;segundo&gt;Fajitas de ternera&lt;/segundo&gt;&lt;postre&gt;Brownie de chocolate&lt;/postre&gt;&lt;importe&gt;32.0&lt;/importe&gt;&lt;/Factura&gt;</message>
 </record>
 </log>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE log SYSTEM "logger.dtd">
+<log>
+<record>
+  <date>2020-11-30T14:10:19.398592800Z</date>
+  <millis>1606745419398</millis>
+  <nanos>592800</nanos>
+  <sequence>0</sequence>
+  <logger>MiLog</logger>
+  <level>INFO</level>
+  <class>accesodatos.Comedor</class>
+  <method>buscaCliente</method>
+  <thread>19</thread>
+  <message>&lt;Factura&gt;&lt;id&gt;4&lt;/id&gt;&lt;fecha&gt;03/02/2020&lt;/fecha&gt;&lt;camarero&gt;Juanito&lt;/camarero&gt;&lt;primero&gt;Berenjenas agridulces&lt;/primero&gt;&lt;segundo&gt;Bonito marinado&lt;/segundo&gt;&lt;postre&gt;Crema catalana&lt;/postre&gt;&lt;importe&gt;90.1&lt;/importe&gt;&lt;/Factura&gt;</message>
+</record>
+<record>
+  <date>2020-11-30T14:10:19.472614800Z</date>
+  <millis>1606745419472</millis>
+  <nanos>614800</nanos>
+  <sequence>1</sequence>
+  <logger>MiLog</logger>
+  <level>INFO</level>
+  <class>accesodatos.Comedor</class>
+  <method>buscaCliente</method>
+  <thread>19</thread>
+  <message>&lt;Factura&gt;&lt;id&gt;5&lt;/id&gt;&lt;fecha&gt;04/02/2020&lt;/fecha&gt;&lt;camarero&gt;Juanito&lt;/camarero&gt;&lt;primero&gt;Judías verdes&lt;/primero&gt;&lt;segundo&gt;Trucha marinada&lt;/segundo&gt;&lt;postre&gt;Crema catalana&lt;/postre&gt;&lt;importe&gt;79.8&lt;/importe&gt;&lt;/Factura&gt;</message>
+</record>
+<record>
+  <date>2020-11-30T14:10:19.534630400Z</date>
+  <millis>1606745419534</millis>
+  <nanos>630400</nanos>
+  <sequence>2</sequence>
+  <logger>MiLog</logger>
+  <level>INFO</level>
+  <class>accesodatos.Comedor</class>
+  <method>buscaCliente</method>
+  <thread>19</thread>
+  <message>&lt;Factura&gt;&lt;id&gt;6&lt;/id&gt;&lt;fecha&gt;05/02/2020&lt;/fecha&gt;&lt;camarero&gt;Juanito&lt;/camarero&gt;&lt;primero&gt;Sopa de huevo&lt;/primero&gt;&lt;segundo&gt;Bonito marinado&lt;/segundo&gt;&lt;postre&gt;Goxua&lt;/postre&gt;&lt;importe&gt;79.0&lt;/importe&gt;&lt;/Factura&gt;</message>
+</record>
+<record>
+  <date>2020-11-30T14:10:19.560637300Z</date>
+  <millis>1606745419560</millis>
+  <nanos>637300</nanos>
+  <sequence>3</sequence>
+  <logger>MiLog</logger>
+  <level>INFO</level>
+  <class>accesodatos.Comedor</class>
+  <method>buscaCliente</method>
+  <thread>19</thread>
+  <message>&lt;Factura&gt;&lt;id&gt;7&lt;/id&gt;&lt;fecha&gt;06/02/2020&lt;/fecha&gt;&lt;camarero&gt;Juanito&lt;/camarero&gt;&lt;primero&gt;Judías verdes&lt;/primero&gt;&lt;segundo&gt;Lomo de cerdo&lt;/segundo&gt;&lt;postre&gt;Crema catalana&lt;/postre&gt;&lt;importe&gt;84.3&lt;/importe&gt;&lt;/Factura&gt;</message>
+</record>
+<record>
+  <date>2020-11-30T14:10:19.605647400Z</date>
+  <millis>1606745419605</millis>
+  <nanos>647400</nanos>
+  <sequence>4</sequence>
+  <logger>MiLog</logger>
+  <level>INFO</level>
+  <class>accesodatos.Comedor</class>
+  <method>buscaCliente</method>
+  <thread>19</thread>
+  <message>&lt;Factura&gt;&lt;id&gt;8&lt;/id&gt;&lt;fecha&gt;07/02/2020&lt;/fecha&gt;&lt;camarero&gt;Merche&lt;/camarero&gt;&lt;primero&gt;Berenjenas agridulces&lt;/primero&gt;&lt;segundo&gt;Trucha marinada&lt;/segundo&gt;&lt;postre&gt;Crema catalana&lt;/postre&gt;&lt;importe&gt;83.0&lt;/importe&gt;&lt;/Factura&gt;</message>
+</record>
+<record>
+  <date>2020-11-30T14:10:19.641714600Z</date>
+  <millis>1606745419641</millis>
+  <nanos>714600</nanos>
+  <sequence>5</sequence>
+  <logger>MiLog</logger>
+  <level>INFO</level>
+  <class>accesodatos.Comedor</class>
+  <method>buscaCliente</method>
+  <thread>19</thread>
+  <message>&lt;Factura&gt;&lt;id&gt;9&lt;/id&gt;&lt;fecha&gt;08/02/2020&lt;/fecha&gt;&lt;camarero&gt;Juanito&lt;/camarero&gt;&lt;primero&gt;Lentejas con calabaza&lt;/primero&gt;&lt;segundo&gt;Trucha marinada&lt;/segundo&gt;&lt;postre&gt;Brownie de chocolate&lt;/postre&gt;&lt;importe&gt;38.7&lt;/importe&gt;&lt;/Factura&gt;</message>
+</record>
+</log>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE log SYSTEM "logger.dtd">
+<log>
+<record>
+  <date>2020-11-30T14:33:37.608502700Z</date>
+  <millis>1606746817608</millis>
+  <nanos>502700</nanos>
+  <sequence>0</sequence>
+  <logger>MiLog</logger>
+  <level>INFO</level>
+  <class>accesodatos.Comedor</class>
+  <method>buscaCliente</method>
+  <thread>19</thread>
+  <message>&lt;Factura&gt;&lt;id&gt;4&lt;/id&gt;&lt;fecha&gt;03/02/2020&lt;/fecha&gt;&lt;camarero&gt;Juanito&lt;/camarero&gt;&lt;primero&gt;Sopa de huevo&lt;/primero&gt;&lt;segundo&gt;Lomo de cerdo&lt;/segundo&gt;&lt;postre&gt;Crema catalana&lt;/postre&gt;&lt;importe&gt;79.0&lt;/importe&gt;&lt;/Factura&gt;</message>
+</record>
+<record>
+  <date>2020-11-30T14:33:37.674520600Z</date>
+  <millis>1606746817674</millis>
+  <nanos>520600</nanos>
+  <sequence>1</sequence>
+  <logger>MiLog</logger>
+  <level>INFO</level>
+  <class>accesodatos.Comedor</class>
+  <method>buscaCliente</method>
+  <thread>19</thread>
+  <message>&lt;Factura&gt;&lt;id&gt;5&lt;/id&gt;&lt;fecha&gt;04/02/2020&lt;/fecha&gt;&lt;camarero&gt;Juanito&lt;/camarero&gt;&lt;primero&gt;Judías verdes&lt;/primero&gt;&lt;segundo&gt;Lomo de cerdo&lt;/segundo&gt;&lt;postre&gt;Trufas de cava&lt;/postre&gt;&lt;importe&gt;67.2&lt;/importe&gt;&lt;/Factura&gt;</message>
+</record>
+<record>
+  <date>2020-11-30T14:33:37.698527300Z</date>
+  <millis>1606746817698</millis>
+  <nanos>527300</nanos>
+  <sequence>2</sequence>
+  <logger>MiLog</logger>
+  <level>INFO</level>
+  <class>accesodatos.Comedor</class>
+  <method>buscaCliente</method>
+  <thread>19</thread>
+  <message>&lt;Factura&gt;&lt;id&gt;6&lt;/id&gt;&lt;fecha&gt;05/02/2020&lt;/fecha&gt;&lt;camarero&gt;Juanito&lt;/camarero&gt;&lt;primero&gt;Lentejas con calabaza&lt;/primero&gt;&lt;segundo&gt;Fajitas de ternera&lt;/segundo&gt;&lt;postre&gt;Trufas de cava&lt;/postre&gt;&lt;importe&gt;51.7&lt;/importe&gt;&lt;/Factura&gt;</message>
+</record>
+<record>
+  <date>2020-11-30T14:33:37.738535700Z</date>
+  <millis>1606746817738</millis>
+  <nanos>535700</nanos>
+  <sequence>3</sequence>
+  <logger>MiLog</logger>
+  <level>INFO</level>
+  <class>accesodatos.Comedor</class>
+  <method>buscaCliente</method>
+  <thread>19</thread>
+  <message>&lt;Factura&gt;&lt;id&gt;7&lt;/id&gt;&lt;fecha&gt;06/02/2020&lt;/fecha&gt;&lt;camarero&gt;Juanito&lt;/camarero&gt;&lt;primero&gt;Sopa de huevo&lt;/primero&gt;&lt;segundo&gt;Trucha marinada&lt;/segundo&gt;&lt;postre&gt;Goxua&lt;/postre&gt;&lt;importe&gt;71.9&lt;/importe&gt;&lt;/Factura&gt;</message>
+</record>
+<record>
+  <date>2020-11-30T14:33:37.768543600Z</date>
+  <millis>1606746817768</millis>
+  <nanos>543600</nanos>
+  <sequence>4</sequence>
+  <logger>MiLog</logger>
+  <level>INFO</level>
+  <class>accesodatos.Comedor</class>
+  <method>buscaCliente</method>
+  <thread>19</thread>
+  <message>&lt;Factura&gt;&lt;id&gt;8&lt;/id&gt;&lt;fecha&gt;07/02/2020&lt;/fecha&gt;&lt;camarero&gt;Merche&lt;/camarero&gt;&lt;primero&gt;Berenjenas agridulces&lt;/primero&gt;&lt;segundo&gt;Bonito marinado&lt;/segundo&gt;&lt;postre&gt;Brownie de chocolate&lt;/postre&gt;&lt;importe&gt;53.3&lt;/importe&gt;&lt;/Factura&gt;</message>
+</record>
+<record>
+  <date>2020-11-30T14:33:37.794551800Z</date>
+  <millis>1606746817794</millis>
+  <nanos>551800</nanos>
+  <sequence>5</sequence>
+  <logger>MiLog</logger>
+  <level>INFO</level>
+  <class>accesodatos.Comedor</class>
+  <method>buscaCliente</method>
+  <thread>19</thread>
+  <message>&lt;Factura&gt;&lt;id&gt;9&lt;/id&gt;&lt;fecha&gt;08/02/2020&lt;/fecha&gt;&lt;camarero&gt;Juanito&lt;/camarero&gt;&lt;primero&gt;Judías verdes&lt;/primero&gt;&lt;segundo&gt;Lomo de cerdo&lt;/segundo&gt;&lt;postre&gt;Goxua&lt;/postre&gt;&lt;importe&gt;81.7&lt;/importe&gt;&lt;/Factura&gt;</message>
+</record>
+</log>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE log SYSTEM "logger.dtd">
+<log>
+<record>
+  <date>2020-11-30T15:00:03.690751400Z</date>
+  <millis>1606748403690</millis>
+  <nanos>751400</nanos>
+  <sequence>0</sequence>
+  <logger>MiLog</logger>
+  <level>INFO</level>
+  <class>accesodatos.Comedor</class>
+  <method>buscaCliente</method>
+  <thread>19</thread>
+  <message>&lt;Factura&gt;&lt;id&gt;12&lt;/id&gt;&lt;fecha&gt;04/02/2020&lt;/fecha&gt;&lt;camarero&gt;Juanito&lt;/camarero&gt;&lt;primero&gt;Sopa de huevo&lt;/primero&gt;&lt;segundo&gt;Trucha marinada&lt;/segundo&gt;&lt;postre&gt;Brownie de chocolate&lt;/postre&gt;&lt;importe&gt;37.7&lt;/importe&gt;&lt;/Factura&gt;</message>
+</record>
+</log>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE log SYSTEM "logger.dtd">
+<log>
+<record>
+  <date>2020-11-30T15:41:44.168309300Z</date>
+  <millis>1606750904168</millis>
+  <nanos>309300</nanos>
+  <sequence>0</sequence>
+  <logger>MiLog</logger>
+  <level>INFO</level>
+  <class>accesodatos.Comedor</class>
+  <method>buscaCliente</method>
+  <thread>19</thread>
+  <message>&lt;Factura&gt;&lt;id&gt;12&lt;/id&gt;&lt;fecha&gt;04/02/2020&lt;/fecha&gt;&lt;camarero&gt;Juanito&lt;/camarero&gt;&lt;primero&gt;Judías verdes&lt;/primero&gt;&lt;segundo&gt;Bonito marinado&lt;/segundo&gt;&lt;postre&gt;Crema catalana&lt;/postre&gt;&lt;importe&gt;86.899994&lt;/importe&gt;&lt;/Factura&gt;</message>
+</record>
+</log>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE log SYSTEM "logger.dtd">
+<log>
+<record>
+  <date>2020-11-30T15:42:42.497081600Z</date>
+  <millis>1606750962497</millis>
+  <nanos>81600</nanos>
+  <sequence>0</sequence>
+  <logger>MiLog</logger>
+  <level>INFO</level>
+  <class>accesodatos.Comedor</class>
+  <method>buscaCliente</method>
+  <thread>19</thread>
+  <message>&lt;Factura&gt;&lt;id&gt;4&lt;/id&gt;&lt;fecha&gt;03/02/2020&lt;/fecha&gt;&lt;camarero&gt;Juanito&lt;/camarero&gt;&lt;primero&gt;Berenjenas agridulces&lt;/primero&gt;&lt;segundo&gt;Trucha marinada&lt;/segundo&gt;&lt;postre&gt;Brownie de chocolate&lt;/postre&gt;&lt;importe&gt;46.2&lt;/importe&gt;&lt;/Factura&gt;</message>
+</record>
+</log>
