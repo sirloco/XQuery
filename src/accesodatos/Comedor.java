@@ -4,6 +4,8 @@ import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Text;
 import org.xmldb.api.base.Resource;
 import org.xmldb.api.base.ResourceIterator;
 import org.xmldb.api.base.ResourceSet;
@@ -13,8 +15,9 @@ import javax.swing.*;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.TransformerException;
+import javax.xml.transform.*;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -232,12 +235,79 @@ public class Comedor extends JFrame {
         try {
             DocumentBuilder builder = factory.newDocumentBuilder();
             DOMImplementation implementation = builder.getDOMImplementation();
-            Document document = implementation.createDocument(null, "Menu", null);
-            document.setXmlVersion("1.0");
+            Document doc = implementation.createDocument(null, "Menu", null);
+            doc.setXmlVersion("1.0");
+
+
+            Main.primeros.forEach((k,v) -> {
+
+                Element prim = doc.createElement("Primero"); //nodo Primeros
+                doc.getDocumentElement().appendChild(prim);
+
+
+                Element nombre = doc.createElement("Nombre");
+                Text plato = doc.createTextNode(k);
+
+                nombre.appendChild(plato);
+                prim.appendChild(nombre);
+
+
+                Element valor = doc.createElement("Precio");
+                Text precio = doc.createTextNode(String.valueOf(v));
+
+                valor.appendChild(precio);
+                prim.appendChild(valor);
+
+            });
 
 
 
-        } catch (ParserConfigurationException ignored) {
+            Main.segundos.forEach((k,v) -> {
+
+                Element segundo = doc.createElement("Segundo"); //nodo Primeros
+                doc.getDocumentElement().appendChild(segundo);
+
+                Element nombre = doc.createElement("Nombre");
+                Text plato = doc.createTextNode(k);
+
+                nombre.appendChild(plato);
+                segundo.appendChild(nombre);
+
+                Element valor = doc.createElement("Precio");
+                Text precio = doc.createTextNode(String.valueOf(v));
+
+                valor.appendChild(precio);
+                segundo.appendChild(valor);
+
+            });
+
+            Main.postres.forEach((k,v) -> {
+
+                Element postre = doc.createElement("Postre"); //nodo Primeros
+                doc.getDocumentElement().appendChild(postre);
+
+                Element nombre = doc.createElement("Nombre");
+                Text plato = doc.createTextNode(k);
+
+                nombre.appendChild(plato);
+                postre.appendChild(nombre);
+
+                Element valor = doc.createElement("Precio");
+                Text precio = doc.createTextNode(String.valueOf(v));
+
+                valor.appendChild(precio);
+                postre.appendChild(valor);
+
+            });
+
+            Source source = new DOMSource(doc);
+            Result result = new StreamResult(new java.io.File(".\\Archivos\\Menu.xml"));
+            Transformer transformer = TransformerFactory.newInstance().newTransformer();
+            transformer.transform(source, result);
+
+        } catch (ParserConfigurationException | TransformerConfigurationException ignored) {
+        } catch (TransformerException e) {
+            e.printStackTrace();
         }
 
 
