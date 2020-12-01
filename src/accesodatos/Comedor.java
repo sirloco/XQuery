@@ -239,7 +239,7 @@ public class Comedor extends JFrame {
             doc.setXmlVersion("1.0");
 
 
-            Main.primeros.forEach((k,v) -> {
+            Main.primeros.forEach((k, v) -> {
 
                 Element prim = doc.createElement("Primero"); //nodo Primeros
                 doc.getDocumentElement().appendChild(prim);
@@ -261,8 +261,7 @@ public class Comedor extends JFrame {
             });
 
 
-
-            Main.segundos.forEach((k,v) -> {
+            Main.segundos.forEach((k, v) -> {
 
                 Element segundo = doc.createElement("Segundo"); //nodo Primeros
                 doc.getDocumentElement().appendChild(segundo);
@@ -281,7 +280,7 @@ public class Comedor extends JFrame {
 
             });
 
-            Main.postres.forEach((k,v) -> {
+            Main.postres.forEach((k, v) -> {
 
                 Element postre = doc.createElement("Postre"); //nodo Primeros
                 doc.getDocumentElement().appendChild(postre);
@@ -330,6 +329,9 @@ public class Comedor extends JFrame {
                 if (!i.hasMoreResources()) {
 
                     System.out.println("No existe el id");
+                    JOptionPane.showMessageDialog(null, "id que quieres buscar no existe",
+                            "Error", JOptionPane.INFORMATION_MESSAGE);
+
 
                 } else {
 
@@ -340,10 +342,18 @@ public class Comedor extends JFrame {
 
             } catch (Exception e) {
                 System.out.println("Error al Buscar cliente.");
+
+                JOptionPane.showMessageDialog(null, "Error al buscar el cliente",
+                        "Error", JOptionPane.INFORMATION_MESSAGE);
+
                 e.printStackTrace();
             }
         } else {
             System.out.println("Error en la conexión. Comprueba datos.");
+
+            JOptionPane.showMessageDialog(null, "Error al intentar conectar a la base de datos",
+                    "Error", JOptionPane.INFORMATION_MESSAGE);
+
         }
 
         return ocupado;
@@ -370,10 +380,18 @@ public class Comedor extends JFrame {
 
             } catch (Exception e) {
                 System.out.println("Error al Buscar cliente.");
+
+                JOptionPane.showMessageDialog(null, "Error al intentar encontrar siguiente id disponible",
+                        "Error", JOptionPane.INFORMATION_MESSAGE);
+
                 e.printStackTrace();
             }
         } else {
             System.out.println("Error en la conexión. Comprueba datos.");
+
+            JOptionPane.showMessageDialog(null, "Error al conectar con la base de datos",
+                    "Error", JOptionPane.INFORMATION_MESSAGE);
+
         }
         return identificador;
     }
@@ -401,7 +419,6 @@ public class Comedor extends JFrame {
 
             try {
 
-                System.out.printf("Actualizo el tiket de : %s\n", cliente);
                 XPathQueryService servicio = (XPathQueryService) Utilidades.col.getService("XPathQueryService", "1.0");
 
                 //Preparamos la consulta esta devuelve el nombre del cliente si existe
@@ -414,23 +431,38 @@ public class Comedor extends JFrame {
 
                     System.out.println("No existe el Tiket");
 
+                    JOptionPane.showMessageDialog(null, "El tiket que quieres actualizar no existe",
+                            "Error", JOptionPane.INFORMATION_MESSAGE);
+
+
                 } else {
 
                     ResourceSet result = servicio.query("update replace " + consulta + " with " + tiket);
 
-                    System.out.println(result);
                     Utilidades.col.close();
                     System.out.println("Tiket actualizado.");
+
+                    JOptionPane.showMessageDialog(null, "Tiket actualizado",
+                            "Info", JOptionPane.INFORMATION_MESSAGE);
+
 
                 }
 
             } catch (Exception e) {
                 System.out.println("Error al borrar.");
+
+                JOptionPane.showMessageDialog(null, "Error al intentar borrar el tiket",
+                        "Error", JOptionPane.INFORMATION_MESSAGE);
+
                 e.printStackTrace();
             }
 
         } else {
             System.out.println("Error en la conexión. Comprueba datos.");
+
+            JOptionPane.showMessageDialog(null, "Problema al intentar conectar con la base de datos",
+                    "Error", JOptionPane.INFORMATION_MESSAGE);
+
         }
 
 
@@ -479,19 +511,30 @@ public class Comedor extends JFrame {
 
                     ResourceSet result = servicio.query("update delete " + consulta);
 
-                    System.out.println(result);
                     Utilidades.col.close();
                     System.out.println("Tiket borrado.");
+
+                    JOptionPane.showMessageDialog(null, "Tiket  borrado",
+                            "Info", JOptionPane.INFORMATION_MESSAGE);
+
 
                 }
 
             } catch (Exception e) {
                 System.out.println("Error al borrar.");
+
+                JOptionPane.showMessageDialog(null, "No se pudo borrar el tiket que querias",
+                        "Error", JOptionPane.INFORMATION_MESSAGE);
+
                 e.printStackTrace();
             }
 
         } else {
             System.out.println("Error en la conexión. Comprueba datos.");
+
+            JOptionPane.showMessageDialog(null, "Error al intentar conectar con la base de datos",
+                    "Error", JOptionPane.INFORMATION_MESSAGE);
+
         }
 
     }
@@ -520,7 +563,6 @@ public class Comedor extends JFrame {
 
         ////////////////////////////////////////////////////////////////////////////////////////////
 
-        System.out.println(consulta);
         if (Utilidades.conectar() != null) {
 
             try {
@@ -539,6 +581,10 @@ public class Comedor extends JFrame {
                             "Error", JOptionPane.INFORMATION_MESSAGE);
 
                     System.out.println("No existe el cliente");
+
+                    JOptionPane.showMessageDialog(null, "El Tiket no existe",
+                            "Error", JOptionPane.INFORMATION_MESSAGE);
+
 
                 } else {
 
@@ -569,17 +615,24 @@ public class Comedor extends JFrame {
 
                     muestraTikets(tikets, nombre);
 
-                    System.out.println("Tikets mostrados par el cliente " + nombre);
-
                 }
                 Utilidades.col.close(); //borramos
-                System.out.println("Cliente Encontrado.");
+
+
             } catch (Exception e) {
                 System.out.println("Error al Buscar cliente.");
+
+                JOptionPane.showMessageDialog(null, "Error al buscar el tiket",
+                        "Error", JOptionPane.INFORMATION_MESSAGE);
+
                 e.printStackTrace();
             }
         } else {
             System.out.println("Error en la conexión. Comprueba datos.");
+
+            JOptionPane.showMessageDialog(null, "No se puedo conectar con la base de datos",
+                    "Error", JOptionPane.INFORMATION_MESSAGE);
+
         }
 
 
@@ -607,12 +660,43 @@ public class Comedor extends JFrame {
             modelo.addElement("Segundo: " + tiket.getSegundo());
             modelo.addElement("Postre: " + tiket.getPostre());
             modelo.addElement("Total: " + tiket.getImporte());
+
         }
         modelo.addElement("------------------------------");
 
         modelo.addElement("");
 
+        generaXml(tikets, nombre);
+
         jlListado.setModel(modelo);
+    }
+
+    private void generaXml(List<Tiket> tikets, String nombre) {
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+
+        try {
+            DocumentBuilder builder = factory.newDocumentBuilder();
+            DOMImplementation implementation = builder.getDOMImplementation();
+            Document doc = implementation.createDocument(null, "Tikets", null);
+            doc.setXmlVersion("1.0");
+
+            List<Factura> fac = new ArrayList<>();
+
+            fac.add(new Factura(nombre));
+
+            Main.crearCliente(fac,tikets,doc);
+
+            Source source = new DOMSource(doc);
+            Result result = new StreamResult(new java.io.File(".\\Archivos\\Tikets.xml"));
+            Transformer transformer = TransformerFactory.newInstance().newTransformer();
+            transformer.transform(source, result);
+
+        } catch (ParserConfigurationException | TransformerConfigurationException ignored) {
+        } catch (TransformerException e) {
+            e.printStackTrace();
+        }
+
+
     }
 
     private String traeNombre(int id) {
@@ -636,10 +720,18 @@ public class Comedor extends JFrame {
 
             } catch (Exception e) {
                 System.out.println("Error al Buscar cliente.");
+
+                JOptionPane.showMessageDialog(null, "Error al intentar localizar el nombre del cliente",
+                        "Error", JOptionPane.INFORMATION_MESSAGE);
+
                 e.printStackTrace();
             }
         } else {
             System.out.println("Error en la conexión. Comprueba datos.");
+
+            JOptionPane.showMessageDialog(null, "No se pudo conectar con la base de datos",
+                    "Error", JOptionPane.INFORMATION_MESSAGE);
+
         }
 
         return nombre;
@@ -703,12 +795,24 @@ public class Comedor extends JFrame {
 
                 System.out.println("Tickeet  insertado.");
 
+                JOptionPane.showMessageDialog(null, "Tiket guardado a nombre de " + nombre,
+                        "Info", JOptionPane.INFORMATION_MESSAGE);
+
+
             } catch (Exception e) {
                 System.out.println("Error al insertar empleado.");
+
+                JOptionPane.showMessageDialog(null, "no se pudo guardar el tiket",
+                        "Error", JOptionPane.INFORMATION_MESSAGE);
+
                 e.printStackTrace();
             }
         } else {
             System.out.println("Error en la conexión. Comprueba datos.");
+
+            JOptionPane.showMessageDialog(null, "No se puede conectar con la base de datos",
+                    "Error", JOptionPane.INFORMATION_MESSAGE);
+
         }
 
     }
