@@ -220,8 +220,9 @@ public class Comedor extends JFrame {
                 JOptionPane.showMessageDialog(null, "Campo obligatorio nombre o id",
                         "Error", JOptionPane.INFORMATION_MESSAGE);
             else {
-                borraTiket(jtCliente.getText(), tjtFecha.getText(), jtId.getText());
-                buscaCliente(jtCliente.getText(), tjtFecha.getText(), jtId.getText());
+
+                String nombre = borraTiket(jtCliente.getText(), tjtFecha.getText(), jtId.getText());
+                buscaCliente(nombre, tjtFecha.getText(), jtId.getText());
             }
         });
 
@@ -468,8 +469,9 @@ public class Comedor extends JFrame {
 
     }
 
-    private void borraTiket(String cliente, String fecha, String id) {
+    private String borraTiket(String cliente, String fecha, String id) {
 
+        String nombre = traeNombre(Integer.parseInt(id));
         /////////////////////////// construyo la jodida consulta ////////////////////////////////
 
         String consulta = "/Comandas/Cliente";
@@ -537,29 +539,55 @@ public class Comedor extends JFrame {
 
         }
 
+
+        return nombre;
     }
 
     private void buscaCliente(String nombre, String fecha, String id) {
 
         /////////////////////////// construyo la jodida consulta ////////////////////////////////
 
+        //jlListado.removeAll();
+
+
         String consulta = "/Comandas/Cliente";
 
-        if (!nombre.isEmpty())
+        //consulta += "[@nombre=\"" + nombre + "\"]/Factura";
+
+        // llena , llena , llena
+        if (!nombre.isEmpty() && !fecha.isEmpty() && !id.isEmpty())
+            consulta += "[@nombre=\"" + nombre + "\"]/Factura[fecha=\"" + fecha + "\"][id = \"" + id + "\"]";
+
+        // vacio vacio vacio
+        if (nombre.isEmpty() && fecha.isEmpty() && id.isEmpty())
+            consulta = "";
+
+        // lleno vacio vacio
+        if (!nombre.isEmpty() && fecha.isEmpty() && id.isEmpty())
             consulta += "[@nombre=\"" + nombre + "\"]/Factura";
 
-        if (!fecha.isEmpty())
+        // lleno vacio lleno
+        if (!nombre.isEmpty() && fecha.isEmpty() && !id.isEmpty())
+            consulta += "[@nombre=\"" + nombre + "\"]/Factura[id = \"" + id + "\"]";
 
-            if (nombre.isEmpty())
-                consulta += "/Factura[fecha=\"" + fecha + "\"]";
-            else
-                consulta += "[fecha=\"" + fecha + "\"]";
+        // lleno lleno vacio
+        if (!nombre.isEmpty() && !fecha.isEmpty() && id.isEmpty())
+            consulta += "[@nombre=\"" + nombre + "\"]/Factura[fecha=\"" + fecha + "\"]";
 
+        // vacio lleno lleno
+        if (nombre.isEmpty() && !fecha.isEmpty() && !id.isEmpty())
+            consulta += "/Factura[fecha=\"" + fecha + "\"][id = \"" + id + "\"]";
 
-        if (!id.isEmpty() && !fecha.isEmpty())
-            consulta += "[id = \"" + id + "\"]";
-        else if (!id.isEmpty())
+        //vacio vacio lleno
+        if (nombre.isEmpty() && fecha.isEmpty() && !id.isEmpty())
             consulta += "/Factura[id = \"" + id + "\"]";
+
+        // vacio lleno vacio
+        if (nombre.isEmpty() && !fecha.isEmpty() && !id.isEmpty())
+            consulta += "/Factura[fecha=\"" + fecha + "\"][id = \"" + id + "\"]";
+
+
+
 
         ////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -638,6 +666,17 @@ public class Comedor extends JFrame {
 
     }
 
+    private void limpiaLista() {
+
+        DefaultListModel<String> modelo = new DefaultListModel<>();
+
+        modelo.addElement("");
+
+        jlListado.setModel(modelo);
+
+
+    }
+
     private void muestraTikets(List<Tiket> tikets, String nombre) {
 
         DefaultListModel<String> modelo = new DefaultListModel<>();
@@ -684,7 +723,7 @@ public class Comedor extends JFrame {
 
             fac.add(new Factura(nombre));
 
-            Main.crearCliente(fac,tikets,doc);
+            Main.crearCliente(fac, tikets, doc);
 
             Source source = new DOMSource(doc);
             Result result = new StreamResult(new java.io.File(".\\Archivos\\Tikets.xml"));
