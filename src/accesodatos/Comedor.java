@@ -62,6 +62,8 @@ public class Comedor extends JFrame {
     }
 
 
+    String nombreAbuscar = null;
+
     public Comedor() {
 
         //Establecer si se muestran por pantalla los registros
@@ -165,7 +167,12 @@ public class Comedor extends JFrame {
                 insertaFactura(id, nombre, fecha, camarero, primero, segundo, postre,
                         String.valueOf(Main.primeros.get(primero) + Main.segundos.get(segundo) + Main.postres.get(postre)));
 
-                buscaCliente(nombre, fecha, id);
+                if (nombreAbuscar != null) {
+                    buscaCliente(nombreAbuscar, "", "");
+                } else {
+                    jlListado.removeAll();
+                }
+
 
             }
         });
@@ -198,7 +205,12 @@ public class Comedor extends JFrame {
                 actualizaTikect(id, nombre, fecha, camarero, primero, segundo, postre,
                         String.valueOf(Main.primeros.get(primero) + Main.segundos.get(segundo) + Main.postres.get(postre)));
 
-                buscaCliente(nombre, fecha, id);
+                if (nombreAbuscar != null) {
+                    buscaCliente(nombreAbuscar, "", "");
+
+                } else {
+
+                }
 
             }
 
@@ -222,7 +234,12 @@ public class Comedor extends JFrame {
             else {
 
                 String nombre = borraTiket(jtCliente.getText(), tjtFecha.getText(), jtId.getText());
-                buscaCliente(nombre, tjtFecha.getText(), jtId.getText());
+                if (nombreAbuscar != null) {
+                    buscaCliente(nombreAbuscar, "", "");
+                } else {
+                    jlListado.removeAll();
+                }
+                nombreAbuscar = null;
             }
         });
 
@@ -329,9 +346,9 @@ public class Comedor extends JFrame {
 
                 if (!i.hasMoreResources()) {
 
-                    System.out.println("No existe el id");
+                   /* System.out.println("No existe el id");
                     JOptionPane.showMessageDialog(null, "id que quieres buscar no existe",
-                            "Error", JOptionPane.INFORMATION_MESSAGE);
+                            "Error", JOptionPane.INFORMATION_MESSAGE);*/
 
 
                 } else {
@@ -346,6 +363,8 @@ public class Comedor extends JFrame {
 
                 JOptionPane.showMessageDialog(null, "Error al buscar el cliente",
                         "Error", JOptionPane.INFORMATION_MESSAGE);
+
+                jlListado.removeAll();
 
                 e.printStackTrace();
             }
@@ -385,6 +404,7 @@ public class Comedor extends JFrame {
                 JOptionPane.showMessageDialog(null, "Error al intentar encontrar siguiente id disponible",
                         "Error", JOptionPane.INFORMATION_MESSAGE);
 
+                jlListado.removeAll();
                 e.printStackTrace();
             }
         } else {
@@ -471,7 +491,11 @@ public class Comedor extends JFrame {
 
     private String borraTiket(String cliente, String fecha, String id) {
 
-        String nombre = traeNombre(Integer.parseInt(id));
+        String nombre = "";
+
+        if (!id.equals("")) {
+            nombre = traeNombre(Integer.parseInt(id));
+        }
         /////////////////////////// construyo la jodida consulta ////////////////////////////////
 
         String consulta = "/Comandas/Cliente";
@@ -549,6 +573,7 @@ public class Comedor extends JFrame {
 
         //jlListado.removeAll();
 
+        nombreAbuscar = nombre;
 
         String consulta = "/Comandas/Cliente";
 
@@ -587,10 +612,9 @@ public class Comedor extends JFrame {
             consulta += "/Factura[fecha=\"" + fecha + "\"][id = \"" + id + "\"]";
 
 
-
-
         ////////////////////////////////////////////////////////////////////////////////////////////
 
+        System.out.println("Consulta A buscar: " + consulta);
         if (Utilidades.conectar() != null) {
 
             try {
@@ -614,6 +638,7 @@ public class Comedor extends JFrame {
                             "Error", JOptionPane.INFORMATION_MESSAGE);
 
 
+                    jlListado.removeAll();
                 } else {
 
                     //El cliente ya existe
@@ -833,6 +858,8 @@ public class Comedor extends JFrame {
                 jtId.setText(idDisponible());
 
                 System.out.println("Tickeet  insertado.");
+
+                nombreAbuscar = nombre;
 
                 JOptionPane.showMessageDialog(null, "Tiket guardado a nombre de " + nombre,
                         "Info", JOptionPane.INFORMATION_MESSAGE);
